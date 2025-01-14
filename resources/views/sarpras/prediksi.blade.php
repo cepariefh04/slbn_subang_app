@@ -6,7 +6,6 @@
         <h2 class="mb-0">Prediksi Aset</h2>
         <h5 class="mb-0">Tahun Ajaran 2024-2025</h5>
       </div>
-
     </div>
 
     <div class="card-body">
@@ -38,16 +37,15 @@
         </div>
       @endif
       {{-- END ALERT --}}
-
+      <button class="btn btn-primary">Mulai Prediksi</button>
       <div class="table-responsive mt-3">
         <table class="table align-middle">
           <thead class="table-secondary">
             <tr>
               <th>No</th>
               <th>Nama Aset</th>
-              <th>Jumlah Aset</th>
-              <th>Jumlah Layak</th>
-              <th>Jumlah Tidak Layak</th>
+              <th>Hasil Prediksi</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -59,9 +57,8 @@
               <tr>
                 <td>{{ $index++ }}</td>
                 <td>{{ $item->nama }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>1</td>
+                <td>1</td>
               </tr>
             @endforeach
           </tbody>
