@@ -16,4 +16,9 @@ class Tahun extends Model
     {
         return $this->hasMany(JumlahAset::class);
     }
+
+    public function jumlahPeserta(): HasMany
+    {
+        return $this->hasMany(JumlahPeserta::class);
+    }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2025 at 05:38 PM
+-- Generation Time: Jan 15, 2025 at 06:40 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -531,6 +531,33 @@ INSERT INTO `jumlah_asets` (`id`, `tahun_id`, `aset_id`, `jumlah`, `jumlah_layak
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `jumlah_pesertas`
+--
+
+CREATE TABLE `jumlah_pesertas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tahun_id` bigint(20) UNSIGNED NOT NULL,
+  `laki_laki` int(11) NOT NULL,
+  `perempuan` int(11) NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `jumlah_pesertas`
+--
+
+INSERT INTO `jumlah_pesertas` (`id`, `tahun_id`, `laki_laki`, `perempuan`, `jumlah`, `created_at`, `updated_at`) VALUES
+(1, 1, 108, 70, 178, '2025-01-15 10:26:39', '2025-01-15 10:26:39'),
+(2, 2, 116, 69, 185, '2025-01-15 10:26:39', '2025-01-15 10:26:39'),
+(3, 3, 121, 77, 198, '2025-01-15 10:27:34', '2025-01-15 10:27:34'),
+(4, 4, 136, 78, 214, '2025-01-15 10:27:55', '2025-01-15 10:27:55'),
+(5, 5, 140, 80, 220, '2025-01-15 10:28:17', '2025-01-15 10:28:17');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -550,7 +577,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (18, '0001_01_01_000002_create_jobs_table', 1),
 (19, '2025_01_09_225603_create_tahuns_table', 1),
 (20, '2025_01_12_153022_create_asets_table', 1),
-(21, '2025_01_12_153546_create_jumlah_asets_table', 1);
+(21, '2025_01_12_153546_create_jumlah_asets_table', 1),
+(25, '2025_01_16_001844_create_jumlah_pesertas_table', 2);
 
 -- --------------------------------------------------------
 
@@ -584,8 +612,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('7emoR83rO756In2N9mgICEFlggjrD5uTjVAa6xdL', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiVTRiWVk3ek1GcDNhaTRTeEp0RWxkNWNsSVp3U1BNM2RkdlpBN2ZlSyI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZCI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM5OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvZGFzaGJvYXJkL3NhcnByYXMiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToyO30=', 1736698916),
-('EXVJNEUducUa1pAyBhT28q8DqMPLVvu9LPPwJON9', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSGc3TUF1ZnhBTUpuQ3JDNFNoZFdDb1B0ckJnRzFxSkhVZkMydHRQTiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvc2FycHJhcyI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7fQ==', 1736678992);
+('qw9v9yRnNjvxXKRYU4dAHFt74S6mqWcFrTIoDAvW', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSEFBZE9VUnExbXM1T0VrQlZZbXBGMm5EMDJ5ZkVwcjN5Z2ZsVUJrZiI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZCI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1736962767),
+('x2JsyGyCNd41W0OSGB8D32Fqa5JToHLMjqZl6fyp', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiVUtOdlFYaENjQXZyMnI0VG1jRXFOeHYxUmJockd3U09NWWlnVFNjNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvcHJlZGljdC0yMDI0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1736877341);
 
 -- --------------------------------------------------------
 
@@ -633,8 +661,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `level`, `last_login_at`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@example.com', '$2y$12$g4R4u5r1sqecXlXiLEQonePiVTDCGbKKOxqDOz/113ohVB0f0Qgc2', 'Admin', '2025-01-12 16:08:21', '2025-01-12 09:08:05', '2025-01-12 09:08:21'),
-(2, 'Khalfin', 'khalfin@example.com', '$2y$12$DIJrM/IjYrHhyfGm//Kr.u7mnAto8B8g8BHcaTVAnAQdySzSVKkSK', 'SarPras', '2025-01-12 23:00:11', '2025-01-12 09:08:50', '2025-01-12 16:00:11');
+(1, 'admin', 'admin@example.com', '$2y$12$g4R4u5r1sqecXlXiLEQonePiVTDCGbKKOxqDOz/113ohVB0f0Qgc2', 'Admin', '2025-01-16 00:09:53', '2025-01-12 09:08:05', '2025-01-15 17:09:53'),
+(2, 'Khalfin', 'khalfin@example.com', '$2y$12$DIJrM/IjYrHhyfGm//Kr.u7mnAto8B8g8BHcaTVAnAQdySzSVKkSK', 'SarPras', '2025-01-15 23:44:40', '2025-01-12 09:08:50', '2025-01-15 16:44:40'),
+(3, 'Tata Usaha', 'tu@example.com', '$2y$12$SHRBEME6tjZ9002ysNyUPuZ5d0U4d17bc4W/tKI2jEVzbly99fXD2', 'TU', '2025-01-16 00:15:07', '2025-01-15 17:10:32', '2025-01-15 17:15:07');
 
 --
 -- Indexes for dumped tables
@@ -685,6 +714,13 @@ ALTER TABLE `jumlah_asets`
   ADD PRIMARY KEY (`id`),
   ADD KEY `jumlah_asets_tahun_id_foreign` (`tahun_id`),
   ADD KEY `jumlah_asets_aset_id_foreign` (`aset_id`);
+
+--
+-- Indexes for table `jumlah_pesertas`
+--
+ALTER TABLE `jumlah_pesertas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jumlah_pesertas_tahun_id_foreign` (`tahun_id`);
 
 --
 -- Indexes for table `migrations`
@@ -748,10 +784,16 @@ ALTER TABLE `jumlah_asets`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=326;
 
 --
+-- AUTO_INCREMENT for table `jumlah_pesertas`
+--
+ALTER TABLE `jumlah_pesertas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `tahuns`
@@ -763,7 +805,7 @@ ALTER TABLE `tahuns`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -775,6 +817,12 @@ ALTER TABLE `users`
 ALTER TABLE `jumlah_asets`
   ADD CONSTRAINT `jumlah_asets_aset_id_foreign` FOREIGN KEY (`aset_id`) REFERENCES `asets` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `jumlah_asets_tahun_id_foreign` FOREIGN KEY (`tahun_id`) REFERENCES `tahuns` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `jumlah_pesertas`
+--
+ALTER TABLE `jumlah_pesertas`
+  ADD CONSTRAINT `jumlah_pesertas_tahun_id_foreign` FOREIGN KEY (`tahun_id`) REFERENCES `tahuns` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

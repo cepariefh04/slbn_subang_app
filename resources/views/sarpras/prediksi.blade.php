@@ -37,7 +37,8 @@
         </div>
       @endif
       {{-- END ALERT --}}
-      <button class="btn btn-primary">Mulai Prediksi</button>
+      <button id="predictButton" class="btn btn-primary">Mulai Prediksi</button>
+      <button id="saveButton" disabled class="btn btn-success">Simpan Hasil Prediksi</button>
       <div class="table-responsive mt-3">
         <table class="table align-middle">
           <thead class="table-secondary">
@@ -57,8 +58,8 @@
               <tr>
                 <td>{{ $index++ }}</td>
                 <td>{{ $item->nama }}</td>
-                <td>1</td>
-                <td>1</td>
+                <td class="prediction-result" data-aset="{{ $item->nama }}">Menunggu...</td>
+                <td class="prediction-status" data-aset="{{ $item->nama }}">-</td>
               </tr>
             @endforeach
           </tbody>
@@ -66,8 +67,41 @@
       </div>
     </div>
   </div>
-
-
   <div class="overlay nav-toggle-icon"></div>
-  <!--end footer-->
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#predictButton').on('click', function() {
+        // Ubah status tombol saat proses berlangsung
+        $(this).prop('disabled', true).text('Memproses...');
+        // Lakukan request AJAX
+        $.ajax({
+          url: "{{ route('sarpras.prediksi-aset') }}",
+          method: "GET",
+          success: function(response) {
+            if (response.success) {
+              const predictions = response.predictions;
+
+              // Perbarui tabel dengan hasil prediksi
+              for (const [asetName, predictedValue] of Object.entries(predictions)) {
+                $(`.prediction-result[data-aset="${asetName}"]`).text(predictedValue);
+                $(`.prediction-status[data-aset="${asetName}"]`).text('Berhasil');
+              }
+            } else {
+              alert("Terjadi kesalahan dalam proses prediksi!");
+            }
+          },
+          error: function() {
+            alert("Gagal terhubung ke server.");
+          },
+          complete: function() {
+            // Aktifkan kembali tombol setelah proses selesai
+            $('#predictButton').prop('disabled', true).text('Prediksi Selesai');
+            $('#saveButton').prop('disabled', false);
+          }
+        });
+      });
+    });
+  </script>
 @endsection

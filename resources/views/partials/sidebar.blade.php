@@ -2,7 +2,7 @@
 <aside class="sidebar-wrapper" data-simplebar="true">
   <div class="sidebar-header">
     <div>
-      <img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon">
+      <img src="{{ asset('assets/images/logo.png') }}" class="logo-icon" alt="logo icon">
     </div>
     <div>
       <h4 class="logo-text">SLBN Subang</h4>
@@ -35,6 +35,23 @@
           <div class="parent-icon"><i class="bi bi-calculator"></i>
           </div>
           <div class="menu-title">Prediksi Aset</div>
+        </a>
+      </li>
+    @else
+      <li>
+        {{-- <a href="/dashboard/sarpras" class="has-arrow"> --}}
+        <a href="/dashboard/tata-usaha">
+          <div class="parent-icon"><i class="bi bi-grid-fill"></i>
+          </div>
+          <div class="menu-title">Data Master</div>
+        </a>
+      </li>
+      <li>
+        {{-- <a href="/dashboard/sarpras" class="has-arrow"> --}}
+        <a href="/dashboard/prediksi-peserta">
+          <div class="parent-icon"><i class="bi bi-calculator"></i>
+          </div>
+          <div class="menu-title">Prediksi Peserta</div>
         </a>
       </li>
     @endif

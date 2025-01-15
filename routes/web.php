@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SarprasController;
+use App\Http\Controllers\TataUsahaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -25,5 +26,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard/sarpras', [SarprasController::class, 'index'])->name('sarpras.dashboard');
     Route::get('/dashboard/prediksi-aset', [SarprasController::class, 'prediksi'])->name('sarpras.prediksi');
-    Route::get('/dashboard/predict-2024', [SarprasController::class, 'predict']);
+    Route::get('/dashboard/predict-2024', [SarprasController::class, 'predict'])->name('sarpras.prediksi-aset');
+
+    Route::get('/dashboard/tata-usaha', [TataUsahaController::class, 'index'])->name('TU.dashboard');
 });
