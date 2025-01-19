@@ -7,6 +7,7 @@ use App\Models\JumlahAset;
 use App\Models\Tahun;
 use App\Services\MonteCarloPrediction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SarprasController extends Controller
 {
@@ -45,29 +46,12 @@ class SarprasController extends Controller
     public function prediksi()
     {
         $assets = Aset::get();
-
         return view('sarpras.prediksi', [
             'assets' => $assets,
         ]);
     }
 
-    // public function predict2024()
-    // {
-    //     $data = [
-    //         2019 => 2,
-    //         2020 => 2,
-    //         2021 => 0,
-    //         2022 => 2,
-    //         2023 => 2,
-    //     ];
-
-    //     $monteCarlo = new MonteCarloPrediction();
-    //     $prediction = $monteCarlo->predict($data, 8, 5, 99, 13);
-
-    //     return response()->json(['prediction' => $prediction]);
-    // }
-
-    public function predict()
+    public function prosesPrediksi()
     {
         // Aset yang menggunakan kolom 'jumlah'
         $asetJumlah = ['Kursi Siswa', 'Meja Siswa'];
@@ -90,7 +74,11 @@ class SarprasController extends Controller
             } else {
                 // Jika tidak, lakukan prediksi dengan Monte Carlo
                 $column = in_array($asetName, $asetJumlah) ? 'jumlah' : 'jumlah_tidak_layak';
-                $predictedValue = $monteCarlo->predict($data, 8, 5, 99, 13);
+                $a = \random_int(1, 999);
+                $c = \random_int(1, 999);
+                $m = \random_int(1, 999);
+                $x0 = \random_int(1, 999);
+                $predictedValue = $monteCarlo->predict($data, $a, $c, $m, $x0);
                 $predictions[$asetName] = $predictedValue;
             }
         }
@@ -142,5 +130,73 @@ class SarprasController extends Controller
             }
         }
         return true; // Jika semua nilai adalah 0, kembalikan true
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            // Validasi data
+            $validated = $request->validate([
+                'tahun' => 'required|string',
+                'predictions' => 'required|array',
+                'predictions.*.aset_id' => 'required|integer',
+                'predictions.*.predicted_value' => 'required|numeric',
+            ]);
+
+            // Pastikan data tahun ada di tabel 'tahuns'
+            $tahun = $validated['tahun'];
+            $tahunRecord = Tahun::firstOrCreate(['tahun' => $tahun]);
+            Log::info('Tahun ID yang digunakan: ' . $tahunRecord->id);
+            Log::info('data', $validated['predictions']);
+            // Loop melalui prediksi dan simpan ke tabel 'jumlah_asets'
+            foreach ($validated['predictions'] as $prediction) {
+                Log::info('Menyimpan prediksi:', [
+                    'tahun_id' => $tahunRecord->id,
+                    'aset_id' => (int) $prediction['aset_id'],
+                    'predicted_value' => (int) $prediction['predicted_value']
+                ]);
+
+                $asetId = $prediction['aset_id'];
+                $predictedValue = $prediction['predicted_value'];
+
+                if (in_array($asetId, [1, 2])) {
+                    // Jika aset_id adalah 1 atau 2, masukkan ke kolom 'jumlah'
+                    JumlahAset::create(
+                        [
+                            'tahun_id' => $tahunRecord->id,
+                            'aset_id' => $asetId,
+                            'jumlah' => $predictedValue,
+                            'jumlah_layak' => 0,
+                            'jumlah_tidak_layak' => 0, // Default
+                        ]
+                    );
+                } else {
+                    // Selain itu, masukkan ke kolom 'jumlah_tidak_layak'
+                    JumlahAset::create(
+                        [
+                            'tahun_id' => $tahunRecord->id,
+                            'aset_id' => $asetId,
+                            'jumlah' => 0, // Default
+                            'jumlah_layak' => 0,
+                            'jumlah_tidak_layak' => $predictedValue,
+                        ]
+                    );
+                }
+            }
+
+
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Hasil prediksi berhasil disimpan.',
+            ]);
+        } catch (\Exception $e) {
+            // Log error untuk debugging
+            \Log::error('Error menyimpan prediksi: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan prediksi.',
+            ], 500);
+        }
     }
 }

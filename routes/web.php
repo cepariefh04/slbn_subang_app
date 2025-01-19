@@ -26,7 +26,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard/sarpras', [SarprasController::class, 'index'])->name('sarpras.dashboard');
     Route::get('/dashboard/prediksi-aset', [SarprasController::class, 'prediksi'])->name('sarpras.prediksi');
-    Route::get('/dashboard/predict-2024', [SarprasController::class, 'predict'])->name('sarpras.prediksi-aset');
+    Route::get('/dashboard/proses-prediksi', [SarprasController::class, 'prosesPrediksi'])->name('sarpras.proses-prediksi');
+    Route::post('/dashboard/store', [SarprasController::class, 'store'])->name('sarpras.storePrediksi');
 
     Route::get('/dashboard/tata-usaha', [TataUsahaController::class, 'index'])->name('TU.dashboard');
+    Route::get('/dashboard/prediksi-peserta', [TataUsahaController::class, 'prediksi'])->name('TU.prediksi');
+    Route::get('/dashboard/proses-prediksi-peserta', [TataUsahaController::class, 'prosesPrediksi'])->name('TU.prosesPrediksi');
+    Route::post('/dashboard/simpan-prediksi-peserta', [TataUsahaController::class, 'simpanPrediksi'])->name('TU.simpanPrediksi');
 });

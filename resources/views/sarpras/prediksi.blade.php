@@ -40,7 +40,7 @@
       <button id="predictButton" class="btn btn-primary">Mulai Prediksi</button>
       <button id="saveButton" disabled class="btn btn-success">Simpan Hasil Prediksi</button>
       <div class="table-responsive mt-3">
-        <table class="table align-middle">
+        <table class="table align-middle" id="assetsTable">
           <thead class="table-secondary">
             <tr>
               <th>No</th>
@@ -56,7 +56,7 @@
 
             @foreach ($assets as $item)
               <tr>
-                <td>{{ $index++ }}</td>
+                <td class="aset-id" data-aset-id="{{ $item->id }}">{{ $item->id }}</td>
                 <td>{{ $item->nama }}</td>
                 <td class="prediction-result" data-aset="{{ $item->nama }}">Menunggu...</td>
                 <td class="prediction-status" data-aset="{{ $item->nama }}">-</td>
@@ -64,6 +64,45 @@
             @endforeach
           </tbody>
         </table>
+        {{-- <nav aria-label="Page navigation example">
+          <ul class="pagination round-pagination justify-content-center">
+            <!-- Tombol Previous -->
+            @if ($assets->onFirstPage())
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+            @else
+              <li class="page-item">
+                <a class="page-link" href="{{ $assets->previousPageUrl() }}">Previous</a>
+              </li>
+            @endif
+
+            <!-- Nomor Halaman -->
+            @for ($page = 1; $page <= $assets->lastPage(); $page++)
+              @if ($page == $assets->currentPage())
+                <li class="page-item active">
+                  <a class="page-link" href="#">{{ $page }}</a>
+                </li>
+              @else
+                <li class="page-item">
+                  <a class="page-link" href="{{ $assets->url($page) }}">{{ $page }}</a>
+                </li>
+              @endif
+            @endfor
+
+            <!-- Tombol Next -->
+            @if ($assets->hasMorePages())
+              <li class="page-item">
+                <a class="page-link" href="{{ $assets->nextPageUrl() }}">Next</a>
+              </li>
+            @else
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Next</a>
+              </li>
+            @endif
+          </ul>
+        </nav> --}}
+
       </div>
     </div>
   </div>
@@ -77,7 +116,7 @@
         $(this).prop('disabled', true).text('Memproses...');
         // Lakukan request AJAX
         $.ajax({
-          url: "{{ route('sarpras.prediksi-aset') }}",
+          url: "{{ route('sarpras.proses-prediksi') }}",
           method: "GET",
           success: function(response) {
             if (response.success) {
@@ -97,9 +136,47 @@
           },
           complete: function() {
             // Aktifkan kembali tombol setelah proses selesai
-            $('#predictButton').prop('disabled', true).text('Prediksi Selesai');
+            $('#predictButton').prop('disabled', false).text('Prediksi Ulang');
             $('#saveButton').prop('disabled', false);
           }
+        });
+      });
+
+      $('#saveButton').on('click', function() {
+        // Kumpulkan data prediksi dari tabel
+        const predictions = [];
+        $('#assetsTable tr').each(function() {
+          const asetId = $(this).find('.aset-id').data('aset-id');
+          const predictedValue = $(this).find('.prediction-result').text();
+
+          if (asetId && predictedValue) {
+            predictions.push({
+              aset_id: asetId,
+              predicted_value: parseInt(predictedValue),
+            });
+          }
+        });
+
+        // Kirim data ke server
+        $.ajax({
+          url: "{{ route('sarpras.storePrediksi') }}",
+          method: "POST",
+          data: {
+            _token: "{{ csrf_token() }}",
+            predictions: predictions,
+            tahun: "2024-2025"
+          },
+          success: function(response) {
+            if (response.success) {
+              alert(response.message);
+              $('#saveButton').prop('disabled', true); // Nonaktifkan tombol setelah disimpan
+            } else {
+              alert("Gagal menyimpan hasil prediksi.");
+            }
+          },
+          error: function() {
+            alert("Terjadi kesalahan saat menyimpan data.");
+          },
         });
       });
     });

@@ -10,7 +10,7 @@ class JumlahAset extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['jumlah', 'jumlah_layak', 'jumlah_tidak_layak'];
+    protected $fillable = ['tahun_id', 'aset_id', 'jumlah', 'jumlah_layak', 'jumlah_tidak_layak'];
 
     public function tahun(): BelongsTo
     {

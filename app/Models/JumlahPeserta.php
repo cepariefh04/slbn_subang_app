@@ -10,7 +10,7 @@ class JumlahPeserta extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['laki-laki', 'perempuan', 'jumlah'];
+    protected $fillable = ['tahun_id', 'laki_laki', 'perempuan', 'jumlah'];
 
     public function tahun(): BelongsTo
     {

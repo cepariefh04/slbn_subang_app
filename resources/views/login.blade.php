@@ -55,10 +55,6 @@
                         <button type="submit" class="btn btn-primary radius-30">Login</button>
                       </div>
                     </div>
-                    <div class="col-12">
-                      <p class="mb-0">Don't have an account yet? <a href="authentication-signup.html">Register here</a>
-                      </p>
-                    </div>
                   </div>
                 </form>
                 @if (session('gagal'))
