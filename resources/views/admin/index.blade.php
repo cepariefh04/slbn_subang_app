@@ -14,7 +14,8 @@
                   <h5 class="modal-title">Tambah Pengguna</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form class="form-body" method="POST" action="{{ route('admin.tambahPengguna') }}">
+                <form class="form-body" method="POST" action="{{ route('admin.tambahPengguna') }}"
+                  enctype="multipart/form-data">
                   <div class="modal-body">
                     @csrf
                     <div class="row g-3">
@@ -37,6 +38,17 @@
                         <div class="ms-auto position-relative">
                           <input type="password" class="form-control" id="inputPassword" name="password"
                             placeholder="Masukkan Password">
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <label for="inputFoto" class="form-label">Foto</label>
+                        <div class="ms-auto position-relative">
+                          <input type="file" class="form-control" id="inputFoto" name="photo" accept="image/*"
+                            onchange="previewPhoto(event)">
+                        </div>
+                        <div class="mt-3">
+                          <img id="photoPreview" src="#" alt="Preview Foto" class="img-thumbnail d-none"
+                            style="max-width: 150px;">
                         </div>
                       </div>
                       <div class="col-12">
@@ -111,8 +123,9 @@
                 <td>{{ $index++ }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-3 cursor-pointer">
-                    <img src="assets/images/avatars/avatar-1.png" class="rounded-circle" width="44" height="44"
-                      alt="">
+                    <img
+                      src="{{ $item->photo ? asset('storage/' . $item->photo) : 'assets/images/avatars/avatar-1.png' }}"
+                      class="rounded-circle" width="44" height="44" alt="">
                     <div class="">
                       <p class="mb-0 text-capitalize">{{ $item->name }}</p>
                     </div>
@@ -124,8 +137,12 @@
                 <td>
                   <div class="table-actions d-flex align-items-center gap-3 fs-6">
                     @if ($item->level !== 'Admin')
+                      <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                        data-bs-target="#editUserModal{{ $item->id }}">
+                        <i class="bi bi-pencil-fill"></i>
+                      </button>
                       <form action="{{ route('admin.hapusPengguna', $item->id) }}" method="POST"
-                        onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        onsubmit="return confirm('Apakah Anda yakin ingin menghapus Data Pengguna tersebut?');">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip"
@@ -137,6 +154,62 @@
                   </div>
                 </td>
               </tr>
+
+              <!-- Modal Edit -->
+              <div class="modal fade" id="editUserModal{{ $item->id }}" tabindex="-1"
+                aria-labelledby="editUserModalLabel{{ $item->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form action="{{ route('admin.updatePengguna', $item->id) }}" method="POST"
+                      enctype="multipart/form-data">
+                      @csrf
+                      @method('PUT')
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editUserModalLabel{{ $item->id }}">Edit Pengguna</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="editName{{ $item->id }}" class="form-label">Nama</label>
+                          <input type="text" class="form-control" id="editName{{ $item->id }}" name="name"
+                            value="{{ $item->name }}" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="editEmail{{ $item->id }}" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="editEmail{{ $item->id }}" name="email"
+                            value="{{ $item->email }}" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="editPassword{{ $item->id }}" class="form-label">Password</label>
+                          <input type="password" class="form-control" id="editPassword{{ $item->id }}"
+                            name="password" placeholder="Kosongkan jika tidak ingin mengubah password">
+                        </div>
+                        <div class="mb-3">
+                          <label for="editPhoto{{ $item->id }}" class="form-label">Photo</label>
+                          <input type="file" class="form-control" id="editPhoto{{ $item->id }}" name="photo"
+                            onchange="previewPhoto(event)">
+                        </div>
+                        <div class="mt-3">
+                          <img id="photoPreview" src="{{ asset('storage/' . $item->photo) }}" alt="Preview Foto"
+                            class="rounded" width="100" height="100">
+                        </div>
+                        <div class="mb-3">
+                          <label for="editLevel{{ $item->id }}" class="form-label">Level</label>
+                          <select class="form-select" id="editLevel{{ $item->id }}" name="level" required>
+                            <option value="Admin" {{ $item->level === 'Admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="SarPras" {{ $item->level === 'SarPras' ? 'selected' : '' }}>SarPras</option>
+                            <option value="TU" {{ $item->level === 'TU' ? 'selected' : '' }}>TU</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             @endforeach
           </tbody>
         </table>
@@ -144,5 +217,25 @@
     </div>
   </div>
   <div class="overlay nav-toggle-icon"></div>
+  <script>
+    function previewPhoto(event) {
+      const file = event.target.files[0];
+      const preview = document.getElementById('photoPreview');
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.classList.remove('d-none');
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = "#";
+        preview.classList.add('d-none');
+      }
+    }
+  </script>
   <!--end footer-->
 @endsection

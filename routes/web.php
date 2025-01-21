@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/dashboard/tambah-pengguna', [AdminController::class, 'tambahPengguna'])->name('admin.tambahPengguna');
+    Route::put('/dashboard/update-pengguna/{id}', [AdminController::class, 'updatePengguna'])->name('admin.updatePengguna');
     Route::delete('/dashboard/delete/{id}', [AdminController::class, 'delete'])->name('admin.hapusPengguna');
 
     Route::get('/dashboard/sarpras', [SarprasController::class, 'index'])->name('sarpras.dashboard');
