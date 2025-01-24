@@ -69,7 +69,7 @@
   <script>
     $(document).ready(function() {
       $('#predictButton').on('click', function() {
-        if ($(this).text() === 'batal') {
+        if ($(this).text() === 'Batal') {
           location.reload(); // Reload halaman
           return; // Hentikan eksekusi lebih lanjut
         }

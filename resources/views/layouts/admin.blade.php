@@ -16,6 +16,7 @@
     <link href="{{ asset('assets/css/bootstrap-extended.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -48,6 +49,9 @@
     <script src="{{ asset('assets/plugins/metismenu/js/metisMenu.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('assets/js/pace.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/datatable/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/js/table-datatable.js') }}"></script>
     <!--app-->
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/index.js') }}"></script>

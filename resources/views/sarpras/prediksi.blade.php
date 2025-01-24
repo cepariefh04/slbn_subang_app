@@ -10,32 +10,7 @@
 
     <div class="card-body">
       {{-- ALERT --}}
-      @if (session('success'))
-        <div class="alert border-0 bg-light-success alert-dismissible fade show py-2 mt-4" id="successAlert">
-          <div class="d-flex align-items-center">
-            <div class="fs-3 text-success">
-              <i class="bi bi-check-circle-fill"></i>
-            </div>
-            <div class="ms-3">
-              <div class="text-success">{{ session('success') }}</div>
-            </div>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      @endif
-      @if (session('error'))
-        <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2 mt-4" id="errorAlert">
-          <div class="d-flex align-items-center">
-            <div class="fs-3 text-danger">
-              <i class="bi bi-exclamation-circle-fill"></i>
-            </div>
-            <div class="ms-3">
-              <div class="text-danger">{{ session('error') }}</div>
-            </div>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      @endif
+      <div id="customAlertContainer"></div>
       {{-- END ALERT --}}
       <button id="predictButton" class="btn btn-primary">Mulai Prediksi</button>
       <button id="saveButton" disabled class="btn btn-success">Simpan Hasil Prediksi</button>
@@ -112,6 +87,10 @@
   <script>
     $(document).ready(function() {
       $('#predictButton').on('click', function() {
+        if ($(this).text() === 'Batal') {
+          location.reload(); // Reload halaman
+          return; // Hentikan eksekusi lebih lanjut
+        }
         // Ubah status tombol saat proses berlangsung
         $(this).prop('disabled', true).text('Memproses...');
         // Lakukan request AJAX
@@ -136,7 +115,7 @@
           },
           complete: function() {
             // Aktifkan kembali tombol setelah proses selesai
-            $('#predictButton').prop('disabled', false).text('Prediksi Ulang');
+            $('#predictButton').prop('disabled', false).text('Batal');
             $('#saveButton').prop('disabled', false);
           }
         });
@@ -167,15 +146,57 @@
             tahun: "2024-2025"
           },
           success: function(response) {
+            // Clear previous alert
+            $('#customAlertContainer').empty();
+
             if (response.success) {
-              alert(response.message);
-              $('#saveButton').prop('disabled', true); // Nonaktifkan tombol setelah disimpan
+                // Tambahkan alert sukses ke container
+                $('#customAlertContainer').html(`
+                  <div class="alert border-0 bg-light-success alert-dismissible fade show py-2">
+                    <div class="d-flex align-items-center">
+                      <div class="fs-3 text-success">
+                        <i class="bi bi-check-circle-fill"></i>
+                      </div>
+                      <div class="ms-3">
+                        <div class="text-success">${response.message}</div>
+                      </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                `);
+                $('#saveButton').prop('disabled', true); // Nonaktifkan tombol setelah disimpan
             } else {
-              alert("Gagal menyimpan hasil prediksi.");
+              // Tambahkan alert gagal ke container
+              $('#customAlertContainer').html(`
+                <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2">
+                  <div class="d-flex align-items-center">
+                    <div class="fs-3 text-danger">
+                      <i class="bi bi-exclamation-circle-fill"></i>
+                    </div>
+                    <div class="ms-3">
+                      <div class="text-danger">${response.message}</div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              `);
             }
           },
           error: function() {
-            alert("Terjadi kesalahan saat menyimpan data.");
+            // Tambahkan alert error ke container
+            $('#customAlertContainer').html(`
+              <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-danger">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-danger">Terjadi kesalahan saat menyimpan data.</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            `);
           },
         });
       });

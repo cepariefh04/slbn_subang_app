@@ -76,30 +76,11 @@
       </div>
       {{-- ALERT --}}
       @if (session('success'))
-        <div class="alert border-0 bg-light-success alert-dismissible fade show py-2 mt-4" id="successAlert">
-          <div class="d-flex align-items-center">
-            <div class="fs-3 text-success">
-              <i class="bi bi-check-circle-fill"></i>
-            </div>
-            <div class="ms-3">
-              <div class="text-success">{{ session('success') }}</div>
-            </div>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <x-alert type="success" :message="session('success')" />
       @endif
+
       @if (session('error'))
-        <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2 mt-4" id="errorAlert">
-          <div class="d-flex align-items-center">
-            <div class="fs-3 text-danger">
-              <i class="bi bi-exclamation-circle-fill"></i>
-            </div>
-            <div class="ms-3">
-              <div class="text-danger">{{ session('error') }}</div>
-            </div>
-          </div>
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        <x-alert type="danger" :message="session('error')" />
       @endif
       {{-- END ALERT --}}
       <div class="table-responsive mt-3">
