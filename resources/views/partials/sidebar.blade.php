@@ -31,10 +31,17 @@
       </li>
       <li>
         {{-- <a href="/dashboard/sarpras" class="has-arrow"> --}}
-        <a href="/dashboard/prediksi-aset">
+        <a href="/dashboard/sarpras/prediksi-aset">
           <div class="parent-icon"><i class="bi bi-calculator"></i>
           </div>
           <div class="menu-title">Prediksi Aset</div>
+        </a>
+      </li>
+      <li>
+        <a href="/dashboard/sarpras/pengajuan">
+          <div class="parent-icon"><i class="bi bi-door-open"></i>
+          </div>
+          <div class="menu-title">Rekap Data Pengajuan</div>
         </a>
       </li>
     @else

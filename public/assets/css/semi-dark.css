@@ -1,22 +1,21 @@
-
-
 html.semi-dark .top-header .navbar .top-navbar-right .nav-link:hover {
-	color: #0d6efd;
-	background-color:#eff5ff
+    color: #007A3D;
+    background-color: #eff5ff
 }
 
 html.semi-dark .top-header .navbar .user-setting {
-	background-color: #ffffff;
+    background-color: #ffffff;
 }
+
 html.semi-dark .mobile-toggle-icon:hover {
-	color: #0d6efd;
-	background-color:#eff5ff
+    color: #007A3D;
+    background-color: #eff5ff
 }
 
 html.semi-dark .toggle-icon:hover {
-	color: #fff;
+    color: #fff;
     background-color: #29344d;
-} 
+}
 
 
 html.semi-dark .sidebar-wrapper,
@@ -27,7 +26,7 @@ html.semi-dark .sidebar-wrapper .sidebar-header {
 }
 
 
-html.semi-dark .sidebar-wrapper, 
+html.semi-dark .sidebar-wrapper,
 html.semi-dark .sidebar-wrapper .sidebar-header {
 
     border-right: 1px solid #1a2232;
@@ -52,7 +51,10 @@ html.semi-dark .sidebar-wrapper .sidebar-header .toggle-icon {
 }
 
 
-html.semi-dark .sidebar-wrapper .metismenu .mm-active>a, html.semi-dark .sidebar-wrapper .metismenu a:active, html.semi-dark .sidebar-wrapper .metismenu a:focus, html.semi-dark .sidebar-wrapper .metismenu a:hover {
+html.semi-dark .sidebar-wrapper .metismenu .mm-active>a,
+html.semi-dark .sidebar-wrapper .metismenu a:active,
+html.semi-dark .sidebar-wrapper .metismenu a:focus,
+html.semi-dark .sidebar-wrapper .metismenu a:hover {
     color: #fff;
     text-decoration: none;
     background: rgb(46 57 78);
@@ -72,7 +74,7 @@ html.semi-dark .sidebar-wrapper .sidebar-header img {
 }
 
 html.semi-dark .sidebar-wrapper .simplebar-scrollbar:before {
-	background: rgba(255, 255, 255, .4)
+    background: rgba(255, 255, 255, .4)
 }
 
 
