@@ -13,34 +13,24 @@ use Illuminate\Support\Facades\Log;
 
 class SarprasController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        // $selectedYear = $request->input('year');
-        // $selectedShow = $request->input('show', 10);
-
         $years = Tahun::orderBy('created_at', 'DESC')->get();
-
-        // Query untuk assets
         $assets = JumlahAset::with(['tahun', 'aset'])->get();
-        $peserta = JumlahPeserta::with(['tahun'])->get();
-        // Filter berdasarkan tahun jika ada
-        // if ($selectedYear) {
-        //   $query->whereHas('tahun', function ($q) use ($selectedYear) {
-        //     $q->where('tahun', $selectedYear);
-        //   });
-        // }
-
-        // if ($selectedShow === 'all') {
-        //   $assets = $query->get();
-        // } else {
-        //   $assets = $query->paginate((int) $selectedShow);
-        // }
 
         return view('sarpras.index', [
             'assets' => $assets,
             'years' => $years,
-            // 'selectedYear' => $selectedYear,
-            // 'selectedShow' => $selectedShow,
+        ]);
+    }
+
+    public function dataPeserta()
+    {
+        $years = Tahun::orderBy('created_at', 'DESC')->get();
+        $peserta = JumlahPeserta::with(['tahun'])->get();
+
+        return view('sarpras.dataPeserta', [
+            'years' => $years,
             'peserta' => $peserta
         ]);
     }
@@ -48,32 +38,59 @@ class SarprasController extends Controller
     public function prediksi(Request $request)
     {
         $selectedYear = $request->input('year');
+
         if ($selectedYear) {
             $riwayat = RiwayatPrediksi::whereHas('tahun', function ($q) use ($selectedYear) {
                 $q->where('tahun', $selectedYear);
-            })->get();
+            })
+                ->with(['tahun'])
+                ->get();
+
+            // Cari tahun terakhir sebelum yang dipilih
+            $lastYear = Tahun::where('tahun', '<', $selectedYear)
+                ->orderByDesc('tahun')
+                ->first();
+
+            $lastYearPredicted = false;
+
+            if ($lastYear) {
+                // Cek apakah tahun terakhir sudah memiliki prediksi
+                $lastYearPredicted = JumlahAset::whereHas('tahun', function ($q) use ($lastYear) {
+                    $q->where('tahun', $lastYear->tahun);
+                })->exists();
+            }
         } else {
-            // Jika tidak ada tahun yang dipilih, ambil semua riwayat prediksi
             $riwayat = RiwayatPrediksi::with(['tahun', 'aset'])->get();
+            $lastYearPredicted = true; // Jika tidak ada tahun yang dipilih, biarkan tetap true
         }
 
         $assets = Aset::get();
         $years = Tahun::get();
+
         return view('sarpras.prediksi', [
             'assets' => $assets,
             'years' => $years,
             'riwayats' => $riwayat,
             'selectedYear' => $selectedYear,
+            'lastYearPredicted' => $lastYearPredicted,
+            'lastYear' => $lastYear->tahun ?? null,
         ]);
     }
 
+
     public function prosesPrediksi()
     {
-        // Aset yang menggunakan kolom 'jumlah'
-        $asetJumlah = ['Kursi Siswa', 'Meja Siswa'];
+        $selectedYear = session('selectedYear');
+
+        if (!$selectedYear) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tahun belum dipilih.',
+            ], 400);
+        }
 
         // Ambil data aset berdasarkan kondisi
-        $allAsetData = $this->getAsetData($asetJumlah);
+        $allAsetData = $this->getAsetData($selectedYear);
 
         // Inisialisasi algoritma Monte Carlo
         $monteCarlo = new MonteCarloPrediction();
@@ -103,11 +120,18 @@ class SarprasController extends Controller
         ]);
     }
 
-    private function getAsetData(array $asetJumlah): array
+    private function getAsetData(string $selectedYear): array
     {
-        // Ambil semua data jumlah aset sekaligus
+        // Ambil 5 tahun terakhir sebelum tahun terbaru
+        $pastYears = Tahun::where('tahun', '<', $selectedYear)
+            ->orderByDesc('tahun')
+            ->limit(5)
+            ->pluck('id');
+
+        // Ambil data jumlah aset berdasarkan 5 tahun terakhir
         $allData = JumlahAset::join('asets', 'jumlah_asets.aset_id', '=', 'asets.id')
             ->join('tahuns', 'jumlah_asets.tahun_id', '=', 'tahuns.id')
+            ->whereIn('jumlah_asets.tahun_id', $pastYears)
             ->select(
                 'asets.nama as aset_name',
                 'tahuns.tahun',
@@ -120,12 +144,11 @@ class SarprasController extends Controller
 
         // Kelompokkan data berdasarkan aset
         $groupedData = $allData->groupBy('aset_name');
-        // dd($groupedData);
         $results = [];
 
         foreach ($groupedData as $asetName => $data) {
             // Tentukan kolom yang digunakan
-            $column = in_array($asetName, $asetJumlah) ? 'jumlah' : 'jumlah_tidak_layak';
+            // $column = in_array($asetName, $asetJumlah) ? 'jumlah' : 'jumlah_tidak_layak';
 
             // Ambil data berdasarkan kolom yang sesuai
             $results[$asetName] = $data->pluck('jumlah', 'tahun')->toArray();
@@ -223,7 +246,7 @@ class SarprasController extends Controller
         foreach ($riwayat as $item) {
             $lastTahunId = $item->tahun_id - 1;
         }
-        $aset = JumlahAset::where('tahun_id', $lastTahunId)->get();
+        $aset = JumlahAset::where('tahun_id', $lastTahunId)->with(['tahun'])->get();
         $peserta = JumlahPeserta::with(['tahun'])->get();
 
         return view('sarpras.pengajuan', [

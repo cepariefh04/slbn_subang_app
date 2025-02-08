@@ -32,7 +32,12 @@
       <div id="customAlertContainer"></div>
       {{-- END ALERT --}}
 
-      @if ($riwayats->isEmpty())
+      @if (!$lastYearPredicted && $selectedYear)
+        <div class="alert alert-danger">
+          Data tahun terakhir ({{ $lastYear }}) belum diprediksi atau belum diajukan. Prediksi kemudian lakukan
+          pengajuan data tahun {{ $lastYear }} terlebih dahulu!
+        </div>
+      @elseif ($riwayats->isEmpty())
         <button id="predictButton" class="btn btn-primary">Mulai Prediksi</button>
         <button id="saveButton" disabled class="btn btn-success">Simpan Hasil Prediksi</button>
         <div class="table-responsive mt-3">
@@ -59,8 +64,8 @@
           </table>
         </div>
       @else
-        <div class="d-flex align-items-center gap-2">
-          <h5>Hasil Prediksi Tahun Ajaran {{ $selectedYear }}</h5>
+        <div class="d-flex align-items-center justify-content-between gap-2">
+          <h5>Hasil Prediksi Tahun Ajaran {{ $riwayats->first()->tahun->tahun }}</h5>
           <a href="/dashboard/sarpras/pengajuan" class="btn btn-outline-primary">Ajukan Pengajuan</a>
         </div>
         <div class="table-responsive mt-3">

@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 @section('adminContainer')
   <div class="row">
-    <div class="col-7">
+    <div class="col-4">
       <div class="card">
         <div class="card-header py-3">
           <div class="d-flex flex-column">
-            <h5 class="mb-0">Riwayat Hasil Prediksi</h2>
+            <h5 class="mb-0">Riwayat Hasil Prediksi {{ $riwayat->first()->tahun->tahun }}</h2>
           </div>
         </div>
         <div class="card-body">
@@ -15,9 +15,9 @@
                 <tr>
                   <th>No</th>
                   <th>Nama Aset</th>
-                  <th>Jumlah Aset</th>
-                  <th>Jumlah Layak</th>
-                  <th>Jumlah Tidak Layak</th>
+                  <th>JA</th>
+                  <th>JL</th>
+                  <th>JTL</th>
                 </tr>
               </thead>
               <tbody>
@@ -40,11 +40,11 @@
         </div>
       </div>
     </div>
-    <div class="col-5">
+    <div class="col-3">
       <div class="card">
         <div class="card-header py-3">
           <div class="d-flex flex-column">
-            <h5 class="mb-0">Data Terakhir</h2>
+            <h5 class="mb-0">Data Terakhir ({{ $lastData->first()->tahun->tahun }})</h2>
           </div>
         </div>
         <div class="card-body">
@@ -52,9 +52,9 @@
             <table class="table align-middle">
               <thead class="table-secondary">
                 <tr>
-                  <th>Jumlah Aset</th>
-                  <th>Jumlah Layak</th>
-                  <th>Jumlah Tidak Layak</th>
+                  <th>JA</th>
+                  <th>JL</th>
+                  <th>JTL</th>
                 </tr>
               </thead>
               <tbody>
