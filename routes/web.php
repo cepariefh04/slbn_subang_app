@@ -25,12 +25,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/update-pengguna/{id}', [AdminController::class, 'updatePengguna'])->name('admin.updatePengguna');
     Route::delete('/dashboard/delete/{id}', [AdminController::class, 'delete'])->name('admin.hapusPengguna');
 
-    Route::get('/dashboard/sarpras', [SarprasController::class, 'index'])->name('sarpras.index');
+    Route::get('/dashboard/sarpras', [SarprasController::class, 'index'])->name('sarpras.dashboard');
     Route::get('/dashboard/sarpras/data-peserta', [SarprasController::class, 'dataPeserta'])->name('sarpras.dataPeserta');
     Route::get('/dashboard/sarpras/prediksi-aset', [SarprasController::class, 'prediksi'])->name('sarpras.prediksi');
     Route::get('/dashboard/sarpras/proses-prediksi', [SarprasController::class, 'prosesPrediksi'])->name('sarpras.proses-prediksi');
-    Route::get('/dashboard/sarpras/pengajuan', [SarprasController::class, 'pengajuan'])->name('sarpras.pengajuan');
     Route::post('/dashboard/sarpras/store', [SarprasController::class, 'store'])->name('sarpras.storePrediksi');
+    Route::get('/dashboard/sarpras/pengajuan', [SarprasController::class, 'pengajuan'])->name('sarpras.pengajuan');
+    Route::get('/dashboard/sarpras/proses-pengajuan', [SarprasController::class, 'prosesPengajuan'])->name('sarpras.proses-pengajuan');
 
     Route::get('/dashboard/tata-usaha', [TataUsahaController::class, 'index'])->name('TU.dashboard');
     Route::get('/dashboard/prediksi-peserta', [TataUsahaController::class, 'prediksi'])->name('TU.prediksi');

@@ -237,7 +237,7 @@ class SarprasController extends Controller
         }
     }
 
-    public function pengajuan(Request $request)
+    public function pengajuan()
     {
         $years = Tahun::orderBy('created_at', 'DESC')->get();
 
@@ -256,6 +256,47 @@ class SarprasController extends Controller
             // 'selectedYear' => $selectedYear,
             // 'selectedShow' => $selectedShow,
             'peserta' => $peserta
+        ]);
+    }
+
+    public function prosesPengajuan()
+    {
+        $years = Tahun::orderBy('created_at', 'DESC')->get();
+        // dd($years);
+        // Query untuk assets
+        $riwayat = RiwayatPrediksi::with(['aset'])->get();
+        $results = [];
+
+        foreach ($riwayat as $item) {
+            $lastTahunId = $item->tahun_id - 1;
+            $jumlahAset = $item->jumlah;
+
+            // Ambil aset berdasarkan tahun sebelumnya dan yang memiliki ID aset yang sama
+            $aset = JumlahAset::where('tahun_id', $lastTahunId)
+                ->where('aset_id', $item->aset_id) // Sesuaikan dengan ID aset yang sama
+                ->first(); // Ambil hanya satu record yang relevan
+
+            if ($aset) {
+                if ($jumlahAset <= $aset->jumlah_layak) {
+                    $jumlahAset = 0;
+                } else {
+                    $jumlahAset = $jumlahAset - $aset->jumlah_layak + $aset->jumlah_tidak_layak;
+                }
+            }
+
+            // Simpan hasilnya ke array results
+            $results[] = [
+                'tahun_id'    => $item->tahun_id,
+                'nama_aset'   => $item->aset_id,
+                'jumlah'      => $jumlahAset,
+                'jumlah_layak' => $aset->jumlah_layak ?? 0,
+                'jumlah_tidak_layak' => $aset->jumlah_tidak_layak ?? 0
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'pengajuan' => $results,
         ]);
     }
 }
