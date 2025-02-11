@@ -110,9 +110,10 @@
         }
         // Ubah status tombol saat proses berlangsung
         $(this).prop('disabled', true).text('Memproses...');
+        const selectedYear = $('select[name="year"]').val();
         // Lakukan request AJAX
         $.ajax({
-          url: "{{ route('sarpras.proses-prediksi') }}",
+          url: "{{ route('sarpras.proses-prediksi', ':year') }}".replace(':year', selectedYear),
           method: "GET",
           success: function(response) {
             if (response.success) {
@@ -182,22 +183,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
                 `);
-              $('#saveButton').prop('disabled', true); // Nonaktifkan tombol setelah disimpan
-            } else {
-              // Tambahkan alert gagal ke container
-              $('#customAlertContainer').html(`
-                <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2">
-                  <div class="d-flex align-items-center">
-                    <div class="fs-3 text-danger">
-                      <i class="bi bi-exclamation-circle-fill"></i>
-                    </div>
-                    <div class="ms-3">
-                      <div class="text-danger">${response.message}</div>
-                    </div>
-                  </div>
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-              `);
+              $('#saveButton').prop('disabled', true);
+              location.reload()
             }
           },
           error: function() {
