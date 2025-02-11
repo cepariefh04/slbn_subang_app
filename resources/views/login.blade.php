@@ -6,11 +6,11 @@
         <div class="card shadow rounded-0 overflow-hidden">
           <div class="row align-items-center g-0">
             <div class="col-lg-6 d-flex align-items-center justify-content-center">
-              <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid" alt="">
+              <img src="{{ asset('assets/images/logo.png') }}" class="img-fluid py-4" width="400" alt="">
             </div>
             <div class="col-lg-6">
               <div class="card-body p-4 p-sm-5">
-                <h4 class="text-center" style="color: #007A3D">Sistem Prediksi Aset SLB Negeri Subang</h4>
+                <h4 class="text-center" style="color: #007A3D">Sistem Prediksi Kebutuhan Aset SLB Negeri Subang</h4>
                 <h5 class="card-title">Login</h5>
                 <form class="form-body" action="{{ route('login.submit') }}" method="post">
                   @csrf

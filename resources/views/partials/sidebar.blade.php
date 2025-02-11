@@ -22,7 +22,7 @@
       </li>
     @elseif (Auth::user()->level === 'SarPras')
       <li>
-        <a href="javascript:;" class="has-arrow">
+        <a href="#" class="has-arrow">
           <div class="parent-icon"><i class="bi bi-house-fill"></i>
           </div>
           <div class="menu-title">Data Master</div>
@@ -59,12 +59,25 @@
       </li>
     @else
       <li>
-        {{-- <a href="/dashboard/sarpras" class="has-arrow"> --}}
-        <a href="/dashboard/tata-usaha">
-          <div class="parent-icon"><i class="bi bi-grid-fill"></i>
+        <a href="#" class="has-arrow">
+          <div class="parent-icon"><i class="bi bi-house-fill"></i>
           </div>
           <div class="menu-title">Data Master</div>
         </a>
+        <ul>
+          <li>
+            <a href="/dashboard/tata-usaha">
+              <i class="bi bi-table"></i>
+              <div class="menu-title">Data Peserta Didik</div>
+            </a>
+          </li>
+          <li>
+            <a href="/dashboard/tata-usaha/data-aset">
+              <i class="bi bi-people"></i>
+              <div class="menu-title">Data Aset</div>
+            </a>
+          </li>
+        </ul>
       </li>
       <li>
         {{-- <a href="/dashboard/sarpras" class="has-arrow"> --}}
