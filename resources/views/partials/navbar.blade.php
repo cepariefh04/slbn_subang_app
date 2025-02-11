@@ -12,19 +12,21 @@
             </div>
           </a>
         </li>
-        <li class="nav-item dark-mode d-none d-sm-flex">
+        {{-- <li class="nav-item dark-mode d-none d-sm-flex">
           <a class="nav-link dark-mode-icon" href="javascript:;">
             <div class="">
               <i class="bi bi-moon-fill"></i>
             </div>
           </a>
-        </li>
+        </li> --}}
       </ul>
     </div>
     <div class="dropdown dropdown-user-setting">
       <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
         <div class="user-setting d-flex align-items-center gap-3">
-          <img src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : 'assets/images/avatars/avatar-1.png' }}" class="user-img" alt="">
+          <img
+            src="{{ Auth::user()->photo ? asset(config('app.storage_path') . Auth::user()->photo) : 'assets/images/avatars/avatar-1.png' }}"
+            class="user-img" alt="">
           <div class="d-none d-sm-block">
             <p class="user-name mb-0">{{ Auth::user()->name }}</p>
             <small class="mb-0 dropdown-user-designation">{{ Auth::user()->level }}</small>

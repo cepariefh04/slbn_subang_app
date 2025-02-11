@@ -34,7 +34,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard/sarpras/prediksi-aset', [SarprasController::class, 'prediksi'])->name('sarpras.prediksi');
         Route::get('/dashboard/sarpras/proses-prediksi/{tahun}', [SarprasController::class, 'prosesPrediksi'])->name('sarpras.proses-prediksi');
         Route::get('/dashboard/sarpras/pengajuan', [SarprasController::class, 'pengajuan'])->name('sarpras.pengajuan');
+        Route::get('/dashboard/sarpras/proses-pengajuan', [SarprasController::class, 'prosesPengajuan'])->name('sarpras.proses-pengajuan');
         Route::post('/dashboard/sarpras/store', [SarprasController::class, 'storePrediksi'])->name('sarpras.storePrediksi');
+        Route::post('/dashboard/sarpras/store-final-aset', [SarprasController::class, 'storeFinalResultAsset'])->name('sarpras.storeFinalResultAsset');
     });
 
     Route::middleware(['auth', 'role:TU'])->group(function () {

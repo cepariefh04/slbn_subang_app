@@ -10,7 +10,8 @@ class AdminController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('admin.index', ['users' => $users]);
+        $storagePath = config('app.storage_path');
+        return view('admin.index', ['users' => $users, 'storagePath' => $storagePath]);
     }
 
     public function tambahPengguna(Request $request)

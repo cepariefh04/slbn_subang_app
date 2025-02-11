@@ -28,6 +28,11 @@
     <link href="{{ asset('assets/css/light-theme.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/semi-dark.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/css/header-colors.css') }}" rel="stylesheet" />
+    <style>
+      .footer {
+        position: fixed;
+      }
+    </style>
     <title>Dashboard</title>
   </head>
 
@@ -54,7 +59,7 @@
     <script src="{{ asset('assets/js/table-datatable.js') }}"></script>
     <!--app-->
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    <script src="{{ asset('assets/js/index.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/index.js') }}"></script> --}}
     <script>
       new PerfectScrollbar(".best-product")
     </script>
