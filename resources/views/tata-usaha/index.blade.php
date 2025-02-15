@@ -1,5 +1,5 @@
-@extends('layouts.admin')
-@section('adminContainer')
+@extends('layouts.notAdmin')
+@section('container')
   <div class="card">
     <div class="card-header py-3">
       <div class="d-flex flex-column">
@@ -34,10 +34,13 @@
           <tbody>
             @php
               $index = 1;
-              $tahunTerakhir = $peserta->max('tahun_id');
             @endphp
 
             @foreach ($peserta as $item)
+              @php
+                $tahunAkhir = (int) explode('-', $item->tahun->tahun)[1];
+                $isEditable = $tahunAkhir > 2024;
+              @endphp
               <tr>
                 <td>{{ $index++ }}</td>
                 <td>{{ $item->tahun->tahun }}</td>
@@ -46,7 +49,7 @@
                 <td>{{ $item->jumlah }}</td>
                 <td>
                   <div class="table-actions d-flex align-items-center gap-3 fs-6">
-                    @if ($item->tahun_id == $tahunTerakhir)
+                    @if ($isEditable)
                       <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                         data-bs-target="#editDataPeserta{{ $item->id }}">
                         <i class="bi bi-pencil-fill"></i> Edit

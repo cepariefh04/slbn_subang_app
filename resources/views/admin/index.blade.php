@@ -170,7 +170,7 @@
                             onchange="previewPhoto(event)">
                         </div>
                         <div class="mt-3">
-                          <img id="photoPreview" src="{{ asset('storage/' . $item->photo) }}" alt="Preview Foto"
+                          <img id="photoPreview" src="{{ asset($storagePath . $item->photo) }}" alt="Preview Foto"
                             class="rounded" width="100" height="100">
                         </div>
                         <div class="mb-3">

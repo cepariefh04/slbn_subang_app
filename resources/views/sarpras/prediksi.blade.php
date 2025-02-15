@@ -33,35 +33,41 @@
 
       @if (!$lastYearPredicted && $selectedYear)
         <div class="alert alert-danger">
-          Data tahun terakhir ({{ $lastYear }}) belum diprediksi atau belum diajukan. Prediksi kemudian lakukan
+          Data tahun terakhir ({{ $lastYear }}) belum diprediksi dan belum diajukan. Prediksi kemudian lakukan
           pengajuan data tahun {{ $lastYear }} terlebih dahulu!
         </div>
       @elseif ($riwayats->isEmpty())
-        <button id="predictButton" class="btn btn-primary">Mulai Prediksi</button>
-        <button id="saveButton" disabled class="btn btn-success">Simpan Hasil Prediksi</button>
-        <div class="table-responsive mt-3">
-          <table class="table align-middle" id="assetsTable">
-            <thead class="table-secondary">
-              <tr>
-                <th>No</th>
-                <th>Nama Aset</th>
-                <th>Hasil Prediksi</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              @php $index = 1; @endphp
-              @foreach ($assets as $item)
+        @if (!$selectedYear)
+          <div class="alert alert-danger">
+            Pilih Tahu terlebih dahulu!
+          </div>
+        @else
+          <button id="predictButton" class="btn btn-primary">Mulai Prediksi</button>
+          <button id="saveButton" disabled class="btn btn-success">Simpan Hasil Prediksi</button>
+          <div class="table-responsive mt-3">
+            <table class="table align-middle" id="assetsTable">
+              <thead class="table-secondary">
                 <tr>
-                  <td class="aset-id" data-aset-id="{{ $item->id }}">{{ $index++ }}</td>
-                  <td>{{ $item->nama }}</td>
-                  <td class="prediction-result" data-aset="{{ $item->nama }}">Menunggu...</td>
-                  <td class="prediction-status" data-aset="{{ $item->nama }}">-</td>
+                  <th>No</th>
+                  <th>Nama Aset</th>
+                  <th>Hasil Prediksi</th>
+                  <th>Status</th>
                 </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                @php $index = 1; @endphp
+                @foreach ($assets as $item)
+                  <tr>
+                    <td class="aset-id" data-aset-id="{{ $item->id }}">{{ $index++ }}</td>
+                    <td>{{ $item->nama }}</td>
+                    <td class="prediction-result" data-aset="{{ $item->nama }}">Menunggu...</td>
+                    <td class="prediction-status" data-aset="{{ $item->nama }}">-</td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        @endif
       @else
         <div class="d-flex align-items-center justify-content-between gap-2">
           <h5>Hasil Prediksi Tahun Ajaran {{ $riwayats->first()->tahun->tahun }}</h5>
@@ -110,6 +116,22 @@
         // Ubah status tombol saat proses berlangsung
         $(this).prop('disabled', true).text('Memproses...');
         const selectedYear = $('select[name="year"]').val();
+
+        if (selectedYear === null) {
+          $('#customAlertContainer').html(`
+              <div class="alert border-0 bg-light-danger alert-dismissible fade show py-2">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-danger">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-danger">Pilih Tahun terlebih dahulu</div>
+                  </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            `);
+        }
         // Lakukan request AJAX
         $.ajax({
           url: "{{ route('sarpras.proses-prediksi', ':year') }}".replace(':year', selectedYear),

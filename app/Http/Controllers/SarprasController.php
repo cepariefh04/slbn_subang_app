@@ -16,8 +16,8 @@ class SarprasController extends Controller
 {
     public function index()
     {
-        $years = Tahun::orderBy('created_at', 'DESC')->get();
-        $assets = JumlahAset::with(['tahun', 'aset'])->get();
+        $years = Tahun::orderBy('id', 'DESC')->get();
+        $assets = JumlahAset::with(['tahun', 'aset'])->orderBy('id', 'DESC')->get();
 
         return view('sarpras.index', [
             'assets' => $assets,
@@ -27,7 +27,7 @@ class SarprasController extends Controller
 
     public function dataPeserta()
     {
-        $years = Tahun::orderBy('created_at', 'DESC')->get();
+        $years = Tahun::orderBy('id', 'DESC')->get();
         $peserta = JumlahPeserta::with(['tahun'])->get();
 
         return view('sarpras.dataPeserta', [
@@ -260,41 +260,88 @@ class SarprasController extends Controller
         }
     }
 
-    public function pengajuan()
+    public function pengajuan(Request $request)
     {
-        $years = Tahun::orderBy('created_at', 'DESC')->get();
-
-        // Query untuk assets
-        $riwayat = RiwayatPrediksi::with(['aset'])->get();
-        if ($riwayat->isEmpty()) {
-            return view('sarpras.pengajuan', [
-                'riwayat' => null,
-                'message' => 'Prediksi Aset belum dilakukan, lakukan Prediksi Aset terlebih dahulu',
-            ]);
-        }
-        foreach ($riwayat as $item) {
-            $lastTahunId = $item->tahun_id - 1;
-        }
-        $aset = JumlahAset::where('tahun_id', $lastTahunId)->with(['tahun'])->get();
+        $selectedYear = $request->input('year');
+        $years = Tahun::get();
         $peserta = JumlahPeserta::with(['tahun'])->get();
+        $assets = Aset::get();
+
+        if ($selectedYear) {
+            $riwayatPengajuan = RiwayatPengajuan::whereHas('tahun', function ($q) use ($selectedYear) {
+                $q->where('tahun', $selectedYear);
+            })->with(['tahun'])->get();
+
+            $riwayatPrediksi = RiwayatPrediksi::whereHas('tahun', function ($q) use ($selectedYear) {
+                $q->where('tahun', $selectedYear);
+            })->with(['tahun'])->get();
+
+            if ($riwayatPrediksi->isEmpty()) {
+                return view('sarpras.pengajuan', [
+                    'riwayatPrediksi' => null,
+                    'message' => "Prediksi Aset tahun $selectedYear belum dilakukan, lakukan Prediksi Aset terlebih dahulu",
+                ]);
+            }
+
+            foreach ($riwayatPrediksi as $item) {
+                $lastTahunId = $item->tahun_id - 1;
+            }
+
+            $aset = JumlahAset::where('tahun_id', $lastTahunId)->with(['tahun'])->get();
+            // Cari tahun terakhir sebelum yang dipilih
+            $lastYear = Tahun::where('tahun', '<', $selectedYear)
+                ->orderByDesc('tahun')
+                ->first();
+
+            $lastYearPredicted = false;
+
+            if ($lastYear) {
+                // Cek apakah tahun terakhir sudah memiliki prediksi
+                $lastYearPredicted = JumlahAset::whereHas('tahun', function ($q) use ($lastYear) {
+                    $q->where('tahun', $lastYear->tahun);
+                })->exists();
+            }
+        } else {
+            $riwayatPengajuan = RiwayatPengajuan::with(['tahun', 'aset'])->get();
+            $riwayatPrediksi = RiwayatPrediksi::with(['aset'])->get();
+            if ($riwayatPrediksi->isEmpty()) {
+                return view('sarpras.pengajuan', [
+                    'riwayatPrediksi' => null,
+                    'message' => 'Prediksi Aset belum dilakukan, lakukan Prediksi Aset terlebih dahulu',
+                ]);
+            } else {
+                foreach ($riwayatPrediksi as $item) {
+                    $lastTahunId = $item->tahun_id - 1;
+                }
+
+                $aset = JumlahAset::where('tahun_id', $lastTahunId)->with(['tahun'])->get();
+            }
+            $lastYearPredicted = true;
+        }
 
         return view('sarpras.pengajuan', [
-            'riwayat' => $riwayat,
+            'riwayatPrediksi' => $riwayatPrediksi,
+            'riwayatPengajuan' => $riwayatPengajuan,
             'years' => $years,
             'lastData' => $aset,
-            // 'selectedYear' => $selectedYear,
-            // 'selectedShow' => $selectedShow,
+            'assets' => $assets,
+            'selectedYear' => $selectedYear,
+            'lastYearPredicted' => $lastYearPredicted,
+            'lastYear' => $lastYear->tahun ?? null,
             'peserta' => $peserta
         ]);
     }
 
-    public function prosesPengajuan()
+    public function prosesPengajuan($tahun)
     {
+        // dd($tahun);
         // Query untuk assets
-        $predictionHistories = RiwayatPrediksi::with(['aset'])->get();
+        $predictionHistories = RiwayatPrediksi::whereHas('tahun', function ($q) use ($tahun) {
+            $q->where('tahun', $tahun);
+        })->with(['tahun', 'aset'])->get();
         $pengajuans = [];
         $finalAsets = [];
-
+        // dd($predictionHistories);
         foreach ($predictionHistories as $history) {
             $lastTahunId = $history->tahun_id - 1;
             $jumlahHasilPrediksi = $history->jumlah;
@@ -331,5 +378,20 @@ class SarprasController extends Controller
             'pengajuan' => $pengajuans,
             'finalAsets' => $finalAsets
         ]);
+    }
+
+    public function updateAset(Request $request)
+    {
+        foreach ($request->jumlah as $id => $jumlah) {
+            $asset = JumlahAset::find($id);
+            if ($asset) {
+                $asset->jumlah = $jumlah;
+                $asset->jumlah_layak = $request->jumlah_layak[$id] ?? $asset->jumlah_layak;
+                $asset->jumlah_tidak_layak = $request->jumlah_tidak_layak[$id] ?? $asset->jumlah_tidak_layak;
+                $asset->save();
+            }
+        }
+
+        return redirect()->back()->with('success', 'Data berhasil diperbarui');
     }
 }
