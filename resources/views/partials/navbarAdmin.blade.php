@@ -1,17 +1,17 @@
 <header class="top-header">
-  <nav class="navbar navbar-expand gap-3">
-    <div class="mobile-toggle-icon fs-3 d-flex d-lg-none">
-      <i class="bi bi-list"></i>
-    </div>
-    <div class="top-navbar-right ms-auto">
-
+  <nav class="navbar gap-3">
+    <div class="d-flex align-items-center gap-3">
+      <a href="/admin">
+        <img src="{{ asset('assets/images/logo.png') }}" class="logo-icon" width="35" alt="logo icon">
+      </a>
+      <a href="/admin" style="color:#5e636b;">
+        <h4 class="logo-text">SLBN Subang</h4>
+      </a>
     </div>
     <div class="dropdown dropdown-user-setting">
       <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
         <div class="user-setting d-flex align-items-center gap-3">
-          <img
-            src="{{ Auth::user()->photo ? asset(config('app.storage_path') . Auth::user()->photo) : 'assets/images/avatars/avatar-1.png' }}"
-            class="user-img" alt="">
+          <img src="{{ asset('assets/images/avatars/user.png') }}" class="user-img" alt="">
           <div class="d-none d-sm-block">
             <p class="user-name mb-0">{{ Auth::user()->name }}</p>
             <small class="mb-0 dropdown-user-designation">{{ Auth::user()->level }}</small>

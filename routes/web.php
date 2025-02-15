@@ -22,10 +22,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     Route::middleware(['role:Admin'])->group(function () {
-        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-        Route::post('/dashboard/tambah-pengguna', [AdminController::class, 'tambahPengguna'])->name('admin.tambahPengguna');
-        Route::put('/dashboard/update-pengguna/{id}', [AdminController::class, 'updatePengguna'])->name('admin.updatePengguna');
-        Route::delete('/dashboard/delete/{id}', [AdminController::class, 'delete'])->name('admin.hapusPengguna');
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::post('/admin/tambah-pengguna', [AdminController::class, 'tambahPengguna'])->name('admin.tambahPengguna');
+        Route::put('/admin/update-pengguna/{id}', [AdminController::class, 'updatePengguna'])->name('admin.updatePengguna');
+        Route::delete('/admin/delete/{id}', [AdminController::class, 'delete'])->name('admin.hapusPengguna');
     });
 
     Route::middleware(['role:SarPras'])->group(function () {

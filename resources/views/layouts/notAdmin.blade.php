@@ -32,31 +32,18 @@
       .footer {
         position: fixed;
       }
-
-      .page-content {
-        margin-left: 0;
-      }
-
-      .top-header .navbar {
-        width: 100%;
-        left: 0;
-      }
-
-      .footer {
-        width: 100%;
-        left: 0;
-      }
     </style>
     <title>Dashboard</title>
   </head>
 
   <body>
     <div class="wrapper">
-      @include('partials.navbarAdmin')
+      @include('partials.navbar')
+      @include('partials.sidebar')
       <main class="page-content">
-        @yield('adminContainer')
+        @yield('container')
       </main>
-      @include('partials.footerAdmin')
+      @include('partials.footer')
     </div>
     <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
 
@@ -73,6 +60,9 @@
     <!--app-->
     <script src="{{ asset('assets/js/app.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/index.js') }}"></script> --}}
+    <script>
+      new PerfectScrollbar(".best-product")
+    </script>
     <script>
       window.onload = function() {
         var successAlert = document.getElementById('successAlert');

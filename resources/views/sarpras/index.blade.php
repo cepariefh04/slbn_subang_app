@@ -1,5 +1,5 @@
-@extends('layouts.admin')
-@section('adminContainer')
+@extends('layouts.notAdmin')
+@section('container')
   <div class="card">
     <div class="card-header py-3">
       <div class="d-flex flex-column">

@@ -104,8 +104,7 @@
                 <td>{{ $index++ }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-3 cursor-pointer">
-                    <img
-                      src="{{ $item->photo ? asset($storagePath . $item->photo) : 'assets/images/avatars/avatar-1.png' }}"
+                    <img src="{{ $item->photo ? asset($storagePath . $item->photo) : 'assets/images/avatars/user.png' }}"
                       class="rounded-circle" width="44" height="44" alt="">
                     <div class="">
                       <p class="mb-0 text-capitalize">{{ $item->name }}</p>

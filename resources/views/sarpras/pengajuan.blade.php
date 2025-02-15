@@ -1,9 +1,9 @@
-@extends('layouts.admin')
-@section('adminContainer')
+@extends('layouts.notAdmin')
+@section('container')
   @if (!$riwayat)
     <x-alert type="danger" :message="$message" />
   @else
-  <div id="customAlertContainer"></div>
+    <div id="customAlertContainer"></div>
     <button id="ajukanButton" class="btn btn-primary">Ajukan</button>
     <button id="showButton" class="btn btn-success" style="display: none;" data-bs-toggle="modal"
       data-bs-target="#hasilDataAset">Lihat Data Aset</button>
@@ -125,12 +125,14 @@
           <div class="modal-header">
             <h5 class="modal-title">Hasil Akhir Kebutuhan Aset Tahun {{ $riwayat->first()->tahun->tahun }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+          </div>
           <div class="modal-body">
             <div class="card">
               <div class="card-body">
-                <p class="mb-0">Dibawah adalah tabel yang berisi data Kebutuhan Aset yang telah melalui proses Prediksi dan Pengajuan untuk tahun {{ $riwayat->first()->tahun->tahun }}.</p>
-                <p class="mb-0">Simpan data pada tabel ini kedalam database untuk digunakan sebagai data acuan untuk proses prediksi ditahun berikutnya.</p>
+                <p class="mb-0">Dibawah adalah tabel yang berisi data Kebutuhan Aset yang telah melalui proses Prediksi
+                  dan Pengajuan untuk tahun {{ $riwayat->first()->tahun->tahun }}.</p>
+                <p class="mb-0">Simpan data pada tabel ini kedalam database untuk digunakan sebagai data acuan untuk
+                  proses prediksi ditahun berikutnya.</p>
                 <div class="table-responsive mt-3">
                   <table class="table align-middle" id="assetsTable">
                     <thead class="table-secondary">
@@ -164,7 +166,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="saveAssetButton">Simpan Aset</button>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -196,7 +198,8 @@
 
               // Perbarui tabel dengan hasil prediksi
               for (const [index, pengajuanValue] of Object.entries(pengajuans)) {
-                $(`.pengajuan-result[data-aset="${index}"]`).html(pengajuanValue.jumlah_pengajuan === 0 ? `<i class="text-success">Tidak Perlu Pengajuan</i>` : pengajuanValue.jumlah_pengajuan);
+                $(`.pengajuan-result[data-aset="${index}"]`).html(pengajuanValue.jumlah_pengajuan === 0 ?
+                  `<i class="text-success">Tidak Perlu Pengajuan</i>` : pengajuanValue.jumlah_pengajuan);
               }
 
               for (const [index, finalResultValues] of Object.entries(finalResults)) {
