@@ -11,8 +11,9 @@
                   return (int) explode('-', $item->tahun->tahun)[1] > 2024;
               }))
             <div>
-              <button type="button" class="btn btn-warning" id="edit-btn">Edit</button>
-              <button type="submit" class="btn btn-primary d-none" id="save-btn">Simpan Perubahan</button>
+              <button type="button" class="btn btn-warning" id="edit-btn"><i class="bi bi-pencil-square"></i> Edit</button>
+              <button type="button" class="btn btn-danger d-none" id="cancel-btn"><i class="bi bi-x-lg"></i> Batal</button>
+              <button type="submit" class="btn btn-primary d-none" id="save-btn"><i class="bi bi-floppy"></i> Simpan Perubahan</button>
             </div>
           @endif
         </div>
@@ -79,6 +80,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       let editBtn = document.getElementById('edit-btn');
       let saveBtn = document.getElementById('save-btn');
+      let cancelBtn = document.getElementById('cancel-btn');
 
       editBtn.addEventListener('click', function() {
         document.querySelectorAll('.editable .edit-mode').forEach(cell => {
@@ -88,7 +90,7 @@
 
           // Ubah jumlah_layak, jumlah_tidak_layak, dan jumlah_aset menjadi input
           if (field === 'jumlah_layak' || field === 'jumlah_tidak_layak' || field === 'jumlah') {
-            cell.innerHTML = `<input type="number" name="${field}[${id}]" value="${value}" 
+            cell.innerHTML = `<input type="number" name="${field}[${id}]" value="${value}"
                              class="form-control jumlah-input" data-id="${id}" data-field="${field}">`;
           }
         });
@@ -96,6 +98,7 @@
         // Sembunyikan tombol Edit, tampilkan tombol Simpan
         editBtn.classList.add('d-none');
         saveBtn.classList.remove('d-none');
+        cancelBtn.classList.remove('d-none');
 
         // Event listener untuk update jumlah aset jika jumlah_layak atau jumlah_tidak_layak berubah
         document.querySelectorAll('.jumlah-input').forEach(input => {
@@ -117,6 +120,10 @@
           });
         });
       });
+
+      cancelBtn.addEventListener('click', function() {
+        location.reload();
+      })
     });
   </script>
 @endsection
