@@ -39,6 +39,9 @@ class SarprasController extends Controller
     public function prediksi(Request $request)
     {
         $selectedYear = $request->input('year');
+        $getHasilPrediksiPeserta = JumlahPeserta::whereHas('tahun', function ($q) use ($selectedYear) {
+            $q->where('tahun', $selectedYear);
+        })->first();
         if ($selectedYear) {
             $riwayat = RiwayatPrediksi::whereHas('tahun', function ($q) use ($selectedYear) {
                 $q->where('tahun', $selectedYear);
@@ -74,6 +77,7 @@ class SarprasController extends Controller
             'selectedYear' => $selectedYear,
             'lastYearPredicted' => $lastYearPredicted,
             'lastYear' => $lastYear->tahun ?? null,
+            'hasilPrediksiPeserta' => $getHasilPrediksiPeserta
         ]);
     }
 
@@ -81,25 +85,32 @@ class SarprasController extends Controller
     {
         // Ambil data aset berdasarkan kondisi
         $allAsetData = $this->getAsetData($tahun);
+        $getHasilPrediksiPeserta = JumlahPeserta::whereHas('tahun', function ($q) use ($tahun) {
+            $q->where('tahun', $tahun);
+        })->first();
+
+        $finalResultTable = (int) round(($getHasilPrediksiPeserta->jumlah * 0.05) + $getHasilPrediksiPeserta->jumlah);
+        $finalResultChair = (int) round(($getHasilPrediksiPeserta->jumlah * 0.10) + $getHasilPrediksiPeserta->jumlah);
 
         // Inisialisasi algoritma Monte Carlo
         $monteCarlo = new MonteCarloPrediction();
-
+        $kursiMeja = ['Kursi Siswa', 'Meja Siswa'];
         $predictions = [];
 
         // Lakukan prediksi untuk setiap aset
         foreach ($allAsetData as $asetName => $data) {
-            // Periksa apakah kolom 'jumlah_tidak_layak' selalu 0 untuk aset
-            if ($this->isJumlahTidakLayakZero($data)) {
-                // Jika selalu 0, kembalikan hasil 0
-                $predictions[$asetName] = 0;
-            } else {
-                $a = \random_int(1, 999);
-                $c = \random_int(1, 999);
-                $m = \random_int(1, 999);
-                $x0 = \random_int(1, 999);
+            $a = \random_int(1, 999);
+            $c = \random_int(1, 999);
+            $m = \random_int(1, 999);
+            $x0 = \random_int(1, 999);
 
-                $predictedValue = $monteCarlo->predict($data, $a, $c, $m, $x0);
+            $predictedValue = $monteCarlo->predict($data, $a, $c, $m, $x0);
+
+            if ($asetName === 'Kursi Siswa') {
+                $predictions[$asetName] = $finalResultChair;
+            } else if ($asetName === 'Meja Siswa') {
+                $predictions[$asetName] = $finalResultTable;
+            } else {
                 $predictions[$asetName] = $predictedValue;
             }
         }
@@ -146,17 +157,6 @@ class SarprasController extends Controller
         }
 
         return $results;
-    }
-
-    private function isJumlahTidakLayakZero(array $data): bool
-    {
-        // Periksa apakah setiap nilai dalam data adalah 0
-        foreach ($data as $year => $value) {
-            if ($value != 0) {
-                return false; // Jika ada nilai yang tidak 0, kembalikan false
-            }
-        }
-        return true; // Jika semua nilai adalah 0, kembalikan true
     }
 
     public function storePrediksi(Request $request)

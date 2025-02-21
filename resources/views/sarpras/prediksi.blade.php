@@ -41,6 +41,11 @@
           <div class="alert alert-danger">
             Pilih Tahu terlebih dahulu!
           </div>
+        @elseif (!$hasilPrediksiPeserta)
+          <div class="alert alert-danger">
+            Tata Usaha belum melakukan prediksi peserta didik untuk tahun {{ $selectedYear }}, Hubungi pihak terkait untuk
+            melakukan prediksi peserta didik.
+          </div>
         @else
           <button id="predictButton" class="btn btn-primary">Mulai Prediksi</button>
           <button id="saveButton" disabled class="btn btn-success">Simpan Hasil Prediksi</button>
@@ -116,6 +121,7 @@
         // Ubah status tombol saat proses berlangsung
         $(this).prop('disabled', true).text('Memproses...');
         const selectedYear = $('select[name="year"]').val();
+        console.log(selectedYear);
 
         if (selectedYear === null) {
           $('#customAlertContainer').html(`

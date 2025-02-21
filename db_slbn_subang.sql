@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 15, 2025 at 06:40 PM
+-- Generation Time: Feb 21, 2025 at 05:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -578,7 +578,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (19, '2025_01_09_225603_create_tahuns_table', 1),
 (20, '2025_01_12_153022_create_asets_table', 1),
 (21, '2025_01_12_153546_create_jumlah_asets_table', 1),
-(25, '2025_01_16_001844_create_jumlah_pesertas_table', 2);
+(25, '2025_01_16_001844_create_jumlah_pesertas_table', 2),
+(26, '2025_01_21_235033_add_photo_to_users_table', 3),
+(27, '2025_01_30_203604_create_riwayat_prediksis_table', 4),
+(28, '2025_02_11_154105_create_riwayat_pengajuans_table', 5);
 
 -- --------------------------------------------------------
 
@@ -590,6 +593,38 @@ CREATE TABLE `password_reset_tokens` (
   `email` varchar(255) NOT NULL,
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `riwayat_pengajuans`
+--
+
+CREATE TABLE `riwayat_pengajuans` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tahun_id` bigint(20) UNSIGNED NOT NULL,
+  `aset_id` bigint(20) UNSIGNED NOT NULL,
+  `jumlah_pengajuan` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `riwayat_prediksis`
+--
+
+CREATE TABLE `riwayat_prediksis` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tahun_id` bigint(20) UNSIGNED NOT NULL,
+  `aset_id` bigint(20) UNSIGNED NOT NULL,
+  `jumlah` int(11) NOT NULL,
+  `jumlah_layak` int(11) NOT NULL,
+  `jumlah_tidak_layak` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -612,8 +647,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('qw9v9yRnNjvxXKRYU4dAHFt74S6mqWcFrTIoDAvW', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSEFBZE9VUnExbXM1T0VrQlZZbXBGMm5EMDJ5ZkVwcjN5Z2ZsVUJrZiI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozMToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZCI7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjI3OiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1736962767),
-('x2JsyGyCNd41W0OSGB8D32Fqa5JToHLMjqZl6fyp', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiVUtOdlFYaENjQXZyMnI0VG1jRXFOeHYxUmJockd3U09NWWlnVFNjNSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvcHJlZGljdC0yMDI0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6Mjt9', 1736877341);
+('rHxhKG9Q0thS558oGiZBypi7D6RSaxqDBULvSal8', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoicnU2NFNSYVAwTlBQTnFBMVB4VUdQWHBMUFdITHl6UG02TFhTa29MSCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2Rhc2hib2FyZC9zYXJwcmFzIjt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1740153397),
+('vaPcRRUuhnRWlBhWSwMFAwva7FC32V91GWD1lDYk', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiSDAwWGlDeFJ1NlBwMHYycEdOcFBtNlJPN0FxeFBBVVk1UFRlT1k2MyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mzk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoYm9hcmQvc2FycHJhcyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjI7fQ==', 1739602892);
 
 -- --------------------------------------------------------
 
@@ -637,7 +672,8 @@ INSERT INTO `tahuns` (`id`, `tahun`, `created_at`, `updated_at`) VALUES
 (2, '2020-2021', '2025-01-01 10:21:48', '2025-01-01 10:21:53'),
 (3, '2021-2022', '2025-01-01 10:22:00', '2025-01-01 10:22:05'),
 (4, '2022-2023', '2025-01-01 10:22:11', '2025-01-01 10:22:15'),
-(5, '2023-2024', '2025-01-01 10:22:19', '2025-01-01 10:22:24');
+(5, '2023-2024', '2025-01-01 10:22:19', '2025-01-01 10:22:24'),
+(6, '2024-2025', '2025-01-01 10:22:20', '2025-01-01 10:22:27');
 
 -- --------------------------------------------------------
 
@@ -651,6 +687,7 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `level` enum('Admin','SarPras','TU') NOT NULL,
+  `photo` varchar(255) NOT NULL,
   `last_login_at` datetime DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -660,10 +697,11 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `level`, `last_login_at`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@example.com', '$2y$12$g4R4u5r1sqecXlXiLEQonePiVTDCGbKKOxqDOz/113ohVB0f0Qgc2', 'Admin', '2025-01-16 00:09:53', '2025-01-12 09:08:05', '2025-01-15 17:09:53'),
-(2, 'Khalfin', 'khalfin@example.com', '$2y$12$DIJrM/IjYrHhyfGm//Kr.u7mnAto8B8g8BHcaTVAnAQdySzSVKkSK', 'SarPras', '2025-01-15 23:44:40', '2025-01-12 09:08:50', '2025-01-15 16:44:40'),
-(3, 'Tata Usaha', 'tu@example.com', '$2y$12$SHRBEME6tjZ9002ysNyUPuZ5d0U4d17bc4W/tKI2jEVzbly99fXD2', 'TU', '2025-01-16 00:15:07', '2025-01-15 17:10:32', '2025-01-15 17:15:07');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `level`, `photo`, `last_login_at`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'admin@example.com', '$2y$12$g4R4u5r1sqecXlXiLEQonePiVTDCGbKKOxqDOz/113ohVB0f0Qgc2', 'Admin', '', '2025-02-15 10:52:07', '2025-01-12 09:08:05', '2025-02-15 03:52:07'),
+(2, 'Khalfin', 'khalfin@example.com', '$2y$12$DIJrM/IjYrHhyfGm//Kr.u7mnAto8B8g8BHcaTVAnAQdySzSVKkSK', 'SarPras', 'photos/vdYtoMnVFFNHliur2NrIATFSTS2rNWPOErhiy9Ak.png', '2025-02-15 12:15:19', '2025-01-12 09:08:50', '2025-02-15 05:15:19'),
+(3, 'Tata Usaha', 'tu@example.com', '$2y$12$SHRBEME6tjZ9002ysNyUPuZ5d0U4d17bc4W/tKI2jEVzbly99fXD2', 'TU', 'photos/9sPbLU4hYXZYjmNCuSXazgHoLAmyLbGZREBW9jt1.png', '2025-02-15 12:11:52', '2025-01-15 17:10:32', '2025-02-15 05:11:52'),
+(4, 'Steven', 'steven@example.com', '$2y$12$I4Zd5Wh6f05EsO.HGRMjs.67G4U5l2SML5NPhNBbiSgq9.YiLT/MG', 'SarPras', 'photos/IBpmz6fl7SWY0QyZAk8uogEh3PQCaBRgq7ZNmyih.png', NULL, '2025-01-21 17:00:30', '2025-01-21 17:29:27');
 
 --
 -- Indexes for dumped tables
@@ -735,6 +773,22 @@ ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
+-- Indexes for table `riwayat_pengajuans`
+--
+ALTER TABLE `riwayat_pengajuans`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `riwayat_pengajuans_tahun_id_foreign` (`tahun_id`),
+  ADD KEY `riwayat_pengajuans_aset_id_foreign` (`aset_id`);
+
+--
+-- Indexes for table `riwayat_prediksis`
+--
+ALTER TABLE `riwayat_prediksis`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `riwayat_prediksis_tahun_id_foreign` (`tahun_id`),
+  ADD KEY `riwayat_prediksis_aset_id_foreign` (`aset_id`);
+
+--
 -- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
@@ -781,31 +835,43 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `jumlah_asets`
 --
 ALTER TABLE `jumlah_asets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=326;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=781;
 
 --
 -- AUTO_INCREMENT for table `jumlah_pesertas`
 --
 ALTER TABLE `jumlah_pesertas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `riwayat_pengajuans`
+--
+ALTER TABLE `riwayat_pengajuans`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `riwayat_prediksis`
+--
+ALTER TABLE `riwayat_prediksis`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tahuns`
 --
 ALTER TABLE `tahuns`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -823,6 +889,20 @@ ALTER TABLE `jumlah_asets`
 --
 ALTER TABLE `jumlah_pesertas`
   ADD CONSTRAINT `jumlah_pesertas_tahun_id_foreign` FOREIGN KEY (`tahun_id`) REFERENCES `tahuns` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `riwayat_pengajuans`
+--
+ALTER TABLE `riwayat_pengajuans`
+  ADD CONSTRAINT `riwayat_pengajuans_aset_id_foreign` FOREIGN KEY (`aset_id`) REFERENCES `asets` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `riwayat_pengajuans_tahun_id_foreign` FOREIGN KEY (`tahun_id`) REFERENCES `tahuns` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `riwayat_prediksis`
+--
+ALTER TABLE `riwayat_prediksis`
+  ADD CONSTRAINT `riwayat_prediksis_aset_id_foreign` FOREIGN KEY (`aset_id`) REFERENCES `asets` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `riwayat_prediksis_tahun_id_foreign` FOREIGN KEY (`tahun_id`) REFERENCES `tahuns` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

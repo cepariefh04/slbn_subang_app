@@ -12,8 +12,10 @@
               }))
             <div>
               <button type="button" class="btn btn-warning" id="edit-btn"><i class="bi bi-pencil-square"></i> Edit</button>
-              <button type="button" class="btn btn-danger d-none" id="cancel-btn"><i class="bi bi-x-lg"></i> Batal</button>
-              <button type="submit" class="btn btn-primary d-none" id="save-btn"><i class="bi bi-floppy"></i> Simpan Perubahan</button>
+              <button type="button" class="btn btn-danger d-none" id="cancel-btn"><i class="bi bi-x-lg"></i>
+                Batal</button>
+              <button type="submit" class="btn btn-primary d-none" id="save-btn"><i class="bi bi-floppy"></i> Simpan
+                Perubahan</button>
             </div>
           @endif
         </div>
@@ -106,7 +108,7 @@
             let id = this.getAttribute('data-id');
             let jumlahLayak = document.querySelector(`input[name="jumlah_layak[${id}]"]`).value;
             let jumlahTidakLayak = document.querySelector(`input[name="jumlah_tidak_layak[${id}]"]`)
-            .value;
+              .value;
 
             // Hitung jumlah aset jika jumlah_layak atau jumlah_tidak_layak berubah
             if (this.getAttribute('data-field') === 'jumlah_layak' || this.getAttribute('data-field') ===

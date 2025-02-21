@@ -3,7 +3,7 @@
   <div class="card">
     <div class="card-header py-3">
       <div class="d-flex flex-column">
-        <h2 class="mb-0">Prediksi Aset</h2>
+        <h2 class="mb-0">Prediksi Peserta Didik</h2>
         <div class="d-flex align-items-center gap-2">
           <h5 class="mb-0">Tahun Ajaran</h5>
           <form action="{{ route('TU.prediksi') }}" method="GET">
