@@ -93,7 +93,7 @@
           // Ubah jumlah_layak, jumlah_tidak_layak, dan jumlah_aset menjadi input
           if (field === 'jumlah_layak' || field === 'jumlah_tidak_layak' || field === 'jumlah') {
             cell.innerHTML = `<input type="number" name="${field}[${id}]" value="${value}"
-                             class="form-control jumlah-input" data-id="${id}" data-field="${field}">`;
+                             class="form-control jumlah-input" data-id="${id}" data-field="${field}" min="0">`;
           }
         });
 

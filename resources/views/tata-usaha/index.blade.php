@@ -74,13 +74,13 @@
                         <div class="mb-3">
                           <label for="updateLakiLaki{{ $item->id }}" class="form-label">Laki-laki</label>
                           <input type="number" class="form-control update-laki" id="updateLakiLaki{{ $item->id }}"
-                            name="laki_laki" value="{{ $item->laki_laki }}" required>
+                            name="laki_laki" value="{{ $item->laki_laki }}" min="0" required>
                         </div>
                         <div class="mb-3">
                           <label for="updatePerempuan{{ $item->id }}" class="form-label">Perempuan</label>
                           <input type="number" class="form-control update-perempuan"
                             id="updatePerempuan{{ $item->id }}" name="perempuan" value="{{ $item->perempuan }}"
-                            required>
+                            min="0" required>
                         </div>
                         <div class="mb-3">
                           <label for="updateJumlah{{ $item->id }}" class="form-label">Jumlah</label>

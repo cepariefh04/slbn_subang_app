@@ -38,6 +38,9 @@
                         <div class="ms-auto position-relative">
                           <input type="password" class="form-control" id="inputPassword" name="password"
                             placeholder="Masukkan Password">
+                          <div class="position-absolute top-50 end-0 translate-middle-y px-3">
+                            <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
+                          </div>
                         </div>
                       </div>
                       <div class="col-12">
@@ -104,7 +107,8 @@
                 <td>{{ $index++ }}</td>
                 <td>
                   <div class="d-flex align-items-center gap-3 cursor-pointer">
-                    <img src="{{ $item->photo ? asset($storagePath . $item->photo) : asset('assets/images/avatars/user.png') }}"
+                    <img
+                      src="{{ $item->photo ? asset($storagePath . $item->photo) : asset('assets/images/avatars/user.png') }}"
                       class="rounded-circle" width="44" height="44" alt="">
                     <div class="">
                       <p class="mb-0 text-capitalize">{{ $item->name }}</p>
@@ -159,15 +163,19 @@
                           <input type="email" class="form-control" id="editEmail{{ $item->id }}" name="email"
                             value="{{ $item->email }}" required>
                         </div>
-                        <div class="mb-3">
-                          <label for="editPassword{{ $item->id }}" class="form-label">Password</label>
-                          <input type="password" class="form-control" id="editPassword{{ $item->id }}"
+                        <label for="editPassword{{ $item->id }}" class="form-label">Password</label>
+                        <div class="mb-3 ms-auto position-relative">
+                          <input type="password" class="form-control pe-5" id="editPassword{{ $item->id }}"
                             name="password" placeholder="Kosongkan jika tidak ingin mengubah password">
+                          <div class="position-absolute top-50 end-0 translate-middle-y px-3">
+                            <i class="bi bi-eye-slash toggle-password" data-target="editPassword{{ $item->id }}"
+                              style="cursor: pointer;"></i>
+                          </div>
                         </div>
                         <div class="mb-3">
                           <label for="editPhoto{{ $item->id }}" class="form-label">Photo</label>
-                          <input type="file" class="form-control" id="editPhoto{{ $item->id }}" name="photo"
-                            onchange="previewPhoto(event)">
+                          <input type="file" class="form-control edit-password" id="editPhoto{{ $item->id }}"
+                            name="photo" onchange="previewPhoto(event)">
                         </div>
                         <div class="mt-3">
                           <img id="photoPreview" src="{{ asset($storagePath . $item->photo) }}" alt="Preview Foto"
@@ -216,6 +224,37 @@
         preview.classList.add('d-none');
       }
     }
+
+    document.getElementById("togglePassword").addEventListener("click", function() {
+      let passwordInput = document.getElementById("inputPassword");
+      let icon = this;
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+      } else {
+        passwordInput.type = "password";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+      }
+    });
+
+    document.querySelectorAll(".toggle-password").forEach(function(icon) {
+      icon.addEventListener("click", function() {
+        let passwordInput = document.getElementById(this.getAttribute("data-target"));
+
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          this.classList.remove("bi-eye-slash");
+          this.classList.add("bi-eye");
+        } else {
+          passwordInput.type = "password";
+          this.classList.remove("bi-eye");
+          this.classList.add("bi-eye-slash");
+        }
+      });
+    });
   </script>
   <!--end footer-->
 @endsection

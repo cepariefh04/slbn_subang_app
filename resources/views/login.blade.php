@@ -41,6 +41,9 @@
                             class="bi bi-lock-fill"></i></div>
                         <input type="password" class="form-control radius-30 ps-5" id="inputChoosePassword"
                           name="password" placeholder="Enter Password">
+                        <div class="position-absolute top-50 end-0 translate-middle-y px-3">
+                          <i class="bi bi-eye-slash" id="togglePassword" style="cursor: pointer;"></i>
+                        </div>
                       </div>
                     </div>
                     {{-- <div class="col-6">
@@ -68,4 +71,20 @@
       </div>
     </div>
   </main>
+  <script>
+    document.getElementById("togglePassword").addEventListener("click", function() {
+      let passwordInput = document.getElementById("inputChoosePassword");
+      let icon = this;
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+      } else {
+        passwordInput.type = "password";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+      }
+    });
+  </script>
 @endsection
