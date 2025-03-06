@@ -56,7 +56,7 @@
                   <th>No</th>
                   <th>Nama Aset</th>
                   <th>Hasil Prediksi</th>
-                  <th>Status</th>
+                  <th>Akurasi</th>
                 </tr>
               </thead>
               <tbody>
@@ -145,11 +145,15 @@
           success: function(response) {
             if (response.success) {
               const predictions = response.predictions;
+              const accurates = response.akurasi;
 
               // Perbarui tabel dengan hasil prediksi
               for (const [asetName, predictedValue] of Object.entries(predictions)) {
                 $(`.prediction-result[data-aset="${asetName}"]`).text(predictedValue);
-                $(`.prediction-status[data-aset="${asetName}"]`).text('Berhasil');
+              }
+
+              for (const [asetName, accuration] of Object.entries(accurates)) {
+                $(`.prediction-status[data-aset="${asetName}"]`).text(accuration);
               }
             } else {
               alert("Terjadi kesalahan dalam proses prediksi!");

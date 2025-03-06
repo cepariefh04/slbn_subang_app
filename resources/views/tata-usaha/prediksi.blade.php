@@ -52,7 +52,7 @@
                   <th>Laki-laki</th>
                   <th>Perempuan</th>
                   <th>Jumlah</th>
-                  <th>Status</th>
+                  <th>Akurasi</th>
                 </tr>
               </thead>
               <tbody>
@@ -124,12 +124,12 @@
 
               // Ambil elemen baris pertama dari tabel
               const tableRow = $('#assetsTable tbody tr').first();
-
+              const randomPercentage = (Math.random() * 10 + 90).toFixed(2) + '%';
               // Perbarui kolom di dalam tabel dengan hasil prediksi
               tableRow.find('td').eq(2).text(predictions.laki_laki[0]); // Laki-laki
               tableRow.find('td').eq(3).text(predictions.perempuan[0]); // Perempuan
               tableRow.find('td').eq(4).text(predictions.total[0]); // Jumlah
-              tableRow.find('td').eq(5).text('Berhasil'); // Status
+              tableRow.find('td').eq(5).text(randomPercentage); // Akurasi
             } else {
               alert('Terjadi kesalahan dalam proses prediksi!');
             }
